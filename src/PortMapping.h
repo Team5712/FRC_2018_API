@@ -16,7 +16,9 @@ class PortMapping
 {
 public:
 
-
+	// Motor controller mappings
+	static const int LEFT_MOTOR_PORT = 1;
+	static const int RIGHT_MOTOR_PORT = 2;
 
 };
 
