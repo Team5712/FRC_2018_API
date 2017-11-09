@@ -9,6 +9,8 @@
 #include <IterativeRobot.h>
 #include <LiveWindow/LiveWindow.h>
 
+#include "Communication.h"
+
 class Robot: public frc::IterativeRobot
 {
 public:
@@ -23,9 +25,9 @@ public:
 	void TestPeriodic();
 
 private:
-
-
 	frc::LiveWindow* lw = LiveWindow::GetInstance();
+
+	Communication *comm;
 
 };
 

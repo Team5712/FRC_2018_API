@@ -6,7 +6,7 @@
 
 Robot::Robot()
 {
-
+	comm = new Communication();
 }
 
 Robot::~Robot()
@@ -16,17 +16,16 @@ Robot::~Robot()
 
 void Robot::RobotInit()
 {
-
 }
 
 void Robot::AutonomousInit()
 {
-
+	comm->connect();
 }
 
 void Robot::AutonomousPeriodic()
 {
-
+	comm->listen();
 }
 
 void Robot::TeleopInit()
