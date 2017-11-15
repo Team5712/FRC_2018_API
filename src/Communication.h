@@ -16,6 +16,8 @@
 #include "./3rdParty/tcpsockets/tcpconnector.h"
 #include <thread>
 
+#include "WPILib.h"
+
 using json = nlohmann::json;
 
 
@@ -34,10 +36,12 @@ public:
 
 private:
 	const int PORT = 5800;
-	const char connectionIP[10] = "127.0.0.1"; // MAKE SURE TO UPDATE SIZE
+	const char CONNECTION_IP[10] = "127.0.0.1"; // MAKE SURE TO UPDATE SIZE
+	const bool IS_SERVER = false;
 
-	TCPConnector *socket;
+	TCPConnector *connector;
 	TCPStream *stream;
+
 
 	void logMessage(std::string msg);
 };
