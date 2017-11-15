@@ -10,6 +10,7 @@
 #include <LiveWindow/LiveWindow.h>
 
 #include "Communication.h"
+#include "Client.h"
 
 class Robot: public frc::IterativeRobot
 {
@@ -27,7 +28,7 @@ public:
 private:
 	frc::LiveWindow* lw = LiveWindow::GetInstance();
 
-	Communication *comm;
+	Client* client;
 
 };
 
