@@ -21,7 +21,7 @@ class Client {
 
 public:
 
-	const char *REMOTE_ADDR = "127.0.0.1";
+	const char *REMOTE_ADDR = "10.0.1.50";
 	const int REMOTE_PORT = 9000;
 	const int UPDATE_INTERVAL = 25;
 

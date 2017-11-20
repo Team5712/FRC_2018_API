@@ -40,12 +40,13 @@ void Client::recieve() {
 		while ((len = stream->receive(line, sizeof(line), 5)) > 0)
 		{
 			size += len;
+			DriverStation::ReportError(line);
 			for(auto i = 0; i < len; i++)
 				buffer.push_back(line[i]);
 		}
 
 		//commands = charToJson(buffer);
-
+		DriverStation::ReportError("JSON Received!");
 		cout << charToJson(buffer) << endl;
 	}
 

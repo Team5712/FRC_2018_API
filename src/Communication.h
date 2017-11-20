@@ -9,17 +9,17 @@
 #define SRC_COMMUNICATION_H_
 
 #include <string>
-#include <./3rdParty/json.hpp>
 #include <vector>
 
 #include "./3rdParty/tcpsockets/tcpacceptor.h"
 #include "./3rdParty/tcpsockets/tcpconnector.h"
-#include <thread>
+#include "./3rdParty/tcpsockets/tcpstream.h"
+#include <./3rdParty/json.hpp>
 
 #include "WPILib.h"
 
 using json = nlohmann::json;
-
+using namespace chrono;
 
 class Communication {
 public:
@@ -29,21 +29,28 @@ public:
 	std::vector<json> commands;
 
 	void connect();
+	void update();
+	void receiveData();
 	void sendData(json data);
 	std::string listen();
-	void sendMessage(std::string message);
 
 
 private:
-	const int PORT = 5800;
+	const int PORT = 9000;
 	const char CONNECTION_IP[10] = "127.0.0.1"; // MAKE SURE TO UPDATE SIZE
 	const bool IS_SERVER = false;
+	const int DUMP_INTERVAL = 25;
 
 	TCPConnector *connector;
 	TCPStream *stream;
 
+	vector<char> msgBuffer;
+	steady_clock::time_point lastDump; // Last time data was dumped to the Jetson server
 
-	void logMessage(std::string msg);
+	void logMessage(const char* msg);
+	void logMessage(std::string msg, double value);
+
+
 };
 
 #endif /* SRC_COMMUNICATION_H_ */
