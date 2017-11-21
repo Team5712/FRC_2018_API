@@ -32,7 +32,7 @@ public:
 	void update();
 	void receiveData();
 	void sendData(json data);
-	std::string listen();
+	//std::string listen();
 
 
 private:
@@ -44,10 +44,18 @@ private:
 	TCPConnector *connector;
 	TCPStream *stream;
 
+	// Receiving variables
 	vector<char> msgBuffer;
+	ssize_t length;
+	char line[256];
+	int size = 0;
+	bool isReceiving = false;
+
 	steady_clock::time_point lastDump; // Last time data was dumped to the Jetson server
 
-	void logMessage(const char* msg);
+	void dumpClientData(); // Used only if the RoboRio is the Client
+
+	void logMessage(std::string msg);
 	void logMessage(std::string msg, double value);
 
 
