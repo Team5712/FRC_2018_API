@@ -20,6 +20,7 @@
 
 using json = nlohmann::json;
 using namespace chrono;
+using namespace std;
 
 class Communication {
 public:
@@ -28,9 +29,9 @@ public:
 
 	std::vector<json> commands;
 
+
 	void connect();
-	void update();
-	void receiveData();
+	void listen(); // Will be a while loop constantly listening for receiving data
 	void sendData(json data);
 	//std::string listen();
 
@@ -44,12 +45,7 @@ private:
 	TCPConnector *connector;
 	TCPStream *stream;
 
-	// Receiving variables
-	vector<char> msgBuffer;
-	ssize_t length;
-	char line[256];
-	int size = 0;
-	bool isReceiving = false;
+	json message;
 
 	steady_clock::time_point lastDump; // Last time data was dumped to the Jetson server
 

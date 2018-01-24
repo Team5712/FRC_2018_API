@@ -3,6 +3,7 @@
  */
 
 #include "Communication.h"
+#include <thread>
 
 Communication::Communication() {
 
@@ -10,6 +11,9 @@ Communication::Communication() {
 	connect();
 	lastDump = steady_clock::now();
 
+
+	thread t_1(&Communication::listen, this);
+	t_1.detach();
 }
 
 
@@ -28,86 +32,40 @@ void Communication::connect() {
 	}
 }
 
-void Communication::update()
+
+void Communication::listen()
 {
 
-	if(IS_SERVER)
-	{
-		if(chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - lastDump).count() >= DUMP_INTERVAL)
-		{
-			lastDump = steady_clock::now();
+	while(true) {
 
-			dumpClientData();
-		}
-	}
+		// if pointer has been assigned eg. connected to a client.
+		if(stream != NULL) {
 
-	if(isReceiving)
-	{
-		length = stream->receive(line, sizeof(line), 5);
-		if(length > 0)
-		{
-			size = size + length;
-			for(auto i = 0; i < length; i++)
+
+			vector<char> buffer;
+
+			size_t len;
+			char line[256];
+			int size = 0;
+
+
+			// while the data we receive into
+			while ((len = stream->receive(line, sizeof(line), 5/*5s timeout*/)) > 0)
 			{
-				// Push all of the characters in line into the buffer
-				msgBuffer.push_back(line[i]);
+				size += len;
+				for(auto i = 0; i < len; i++)
+					buffer.push_back(line[i]);
 			}
 
-		} else
-		{
-			isReceiving = false;
-			char str[80];
-			sprintf(str, "Message received!");
-			DriverStation::ReportError(str);
+			json msg = json::parse(buffer);
+
+        	char str[80];
+        	sprintf(str, "Json Recieved");
+        	DriverStation::ReportError(str);
 		}
 	}
 
 }
-
-void Communication::receiveData()
-{
-
-	length = stream->receive(line, sizeof(line), 5);
-	if(length > 0) // If the length of the data receiving is greater than 0
-	{
-		isReceiving = true;
-	}
-
-}
-
-//std::string Communication::listen()
-//{
-//
-//	while(true) {
-//
-//		// if pointer has been assigned eg. connected to a client.
-//		if(stream != NULL) {
-//
-//
-//			vector<char> buffer;
-//
-//			ssize_t len;
-//			char line[256];
-//			int size = 0;
-//
-//
-//			// while the data we recieve into
-//			while ((len = stream->receive(line, sizeof(line), 5/*5s timeout*/)) > 0)
-//			{
-//				size += len;
-//				for(auto i = 0; i < len; i++)
-//					buffer.push_back(line[i]);
-//			}
-//
-//			json commands = json::parse(buffer);
-//
-//        	char str[80];
-//        	sprintf(str, "Json Recieved");
-//        	DriverStation::ReportError(str);
-//		}
-//	}
-//
-//}
 
 void Communication::sendData(json data) {
 

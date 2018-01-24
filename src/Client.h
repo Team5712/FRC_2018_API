@@ -39,6 +39,7 @@ public:
 	size_t jsonToChar(json j, char data[]);
 	json charToJson(const char* data);
 	json charToJson(vector<char> data);
+
 };
 
 /* for finding delta time

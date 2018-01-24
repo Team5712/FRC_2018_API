@@ -31,7 +31,7 @@ void Client::recieve() {
 
 		vector<char> buffer;
 
-		ssize_t len;
+		size_t len;
 		char line[256];
 		int size = 0;
 
